@@ -1,0 +1,64 @@
+# =============================================================================
+# Kam 工程配置（MemDeco-WG/Kam）
+# 结构：kam.toml + src/<module-id>/  →  src/Brightness_Enhance_PLK110/
+#
+# 注意：本机暂时无法编译 Kam（缺 mingw 的 dlltool，且 rustup 域名被网络限制），
+#       因此本文件尚未被 `kam validate/build` 实际校验过。
+#       Kam 可用后请依次执行：
+#         kam validate          # 校验 kam.toml
+#         kam export            # 由本文件生成 module.prop / module.json / update.json
+#         kam build --release --sign
+# =============================================================================
+
+[prop]
+id = "Brightness_Enhance_PLK110"
+name = "[OnePlus 15] 自动亮度优化增强"
+version = "v1.8.5"
+versionCode = 185
+author = "@GDGGfun"
+description = "调整自动亮度曲线，提高最大亮度至2200nit，降低激发亮度阈值，亮度可自动1nit，移除导航应用亮度特调"
+updateJson = "https://raw.githubusercontent.com/GDGGfun/Brightness_Enhance_PLK110/main/update.json"
+metamodule = false
+
+[mmrl.repo]
+license = "MIT"
+license_file = ""
+homepage = "https://github.com/GDGGfun/Brightness_Enhance_PLK110"
+readme = ""
+readme_file = "README.md"
+changelog = ""
+changelog_file = ""
+screenshots = []
+categories = ["display", "performance"]
+keywords = ["brightness", "display", "oplus", "oneplus", "plk110", "autobrightness"]
+maintainers = []
+repository = "https://github.com/GDGGfun/Brightness_Enhance_PLK110"
+documentation = ""
+issues = "https://github.com/GDGGfun/Brightness_Enhance_PLK110/issues"
+funding = ""
+support = ""
+donate = ""
+cover = ""
+icon = ""
+devices = ["PLK110", "CPH2747", "OP60FFL1"]
+arch = ["arm64-v8a"]
+require = []
+antifeatures = []
+max_num = 0
+min_api = 33
+max_api = 99
+verified = false
+features = ["webui", "brightness-curve", "nav-app-brightness"]
+
+[kam]
+module_type = "module"
+
+[kam.build]
+target_dir = "dist"
+output_file = "Brightness_Enhance_PLK110_v1.8.5"
+hooks_dir = "hooks"
+
+[kam.workspace]
+members = ["."]
+
+[tool]

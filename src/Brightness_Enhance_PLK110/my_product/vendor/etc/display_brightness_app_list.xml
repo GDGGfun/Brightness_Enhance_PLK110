@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <version>20260902</version>
+    <version>20260922</version>
     <!-- add for foss function -->
     <foss enable="1">
         <type id="2" name="normal app">
@@ -766,28 +766,6 @@
         <rate_out mode='1'>0,0,20</rate_out>
     </method>
 
-    <method id="7">
-        <!-- 百度地图 -->
-        <app>com.baidu.BaiduMap</app>
-        <!-- 高德地图 -->
-        <app>com.autonavi.minimap</app>
-        <!-- 腾讯地图 -->
-        <app>com.tencent.map</app>
-        <!-- 谷歌地图 -->
-        <app>com.google.android.apps.maps</app>
-        <!-- 位智 -->
-        <app>com.waze</app>
-        <switch>1</switch>
-        <nit mode='0'>500,800,2000</nit>
-        <ratio mode='0'>0.0,0.375,0.6</ratio>
-        <rate_in mode='0'>0,10,18</rate_in>
-        <rate_out mode='0'>0,15,20</rate_out>
-        <nit mode='1'>500,800,2000</nit>
-        <ratio mode='1'>0.0,0.0,0.6</ratio>
-        <rate_in mode='1'>0,0,10</rate_in>
-        <rate_out mode='1'>0,0,15</rate_out>
-    </method>
-
     <backlightStat>
         <support>1</support>
         <useNit>1</useNit>
@@ -839,6 +817,11 @@
         <app>com.coloros.gallery3d</app>
         <app>com.oneplus.gallery</app>
         <app>com.android.launcher</app>
+        <app>com.baidu.BaiduMap</app>
+        <app>com.autonavi.minimap</app>
+        <app>com.tencent.map</app>
+        <app>com.google.android.apps.maps</app>
+        <app>com.waze</app>
     </global_brightness_limit>
 
     <!-- add for single pulse -->

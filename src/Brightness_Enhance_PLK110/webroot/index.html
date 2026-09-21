@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自动亮度优化增强</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-l">
+    <h1>[OnePlus 15] 自动亮度优化增强</h1>
+    <p class="sub">
+      <span id="modver">--</span>
+      <span class="dot">·</span> 面板 <b id="panel">--</b>
+      <span class="dot">·</span> <span id="update">--</span>
+    </p>
+  </div>
+  <span class="badge" id="badge">读取中…</span>
+</header>
+
+<main>
+  <!-- 实时读数 -->
+  <section class="card">
+    <div class="card-head">
+      <h2>实时读数</h2>
+      <span class="hint" id="tick">--</span>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        <div class="stat-k">环境光</div>
+        <div class="stat-v"><span id="lux">--</span><i>lux</i></div>
+        <div class="stat-b"><div class="bar"><i id="luxBar"></i></div></div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-k">屏幕亮度</div>
+        <div class="stat-v"><span id="nit">--</span><i>nit</i></div>
+        <div class="stat-b">
+          <span class="mini">原始值 <b id="raw">--</b> / <b id="bmax">--</b></span>
+          <span class="mini">亮度条 <b id="pct">--</b>%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">激发亮度 <b id="hbm">--</b></span>
+      <span class="chip">屏幕 <b id="screen">--</b></span>
+      <span class="chip">亮度模式 <b id="mode">--</b></span>
+      <span class="chip">面板上限 <b id="pmaxnit">--</b> nit</span>
+      <span class="chip">app_list <b id="appver">--</b></span>
+    </div>
+  </section>
+
+  <!-- 曲线 + 工作点 -->
+  <section class="card">
+    <div class="card-head">
+      <h2>自动亮度曲线（lux → nit）</h2>
+      <span class="hint">红点＝当前工作点（实际 / 曲线目标）</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart" width="1200" height="640"></canvas>
+    </div>
+    <div class="legend">
+      <span><i class="sw sw-curve"></i>曲线</span>
+      <span><i class="sw sw-hbm"></i>800nit 激发门槛</span>
+      <span><i class="sw sw-real"></i>实际亮度</span>
+      <span><i class="sw sw-goal"></i>曲线目标</span>
+    </div>
+    <div class="workpoint">
+      当前工作点：<b id="wp">--</b>
+    </div>
+  </section>
+
+  <div class="foot">
+    <button class="btn" id="btn">立即刷新</button>
+    <span class="hint" id="msg"></span>
+  </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
