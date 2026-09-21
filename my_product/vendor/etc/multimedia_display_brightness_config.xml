@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <!-- add for RUS brightness configurations. -->
+    <version>20260902</version>
+
+    <lux_table name="expressiveness">
+        <!-- 自动亮度曲线 v1.8.2（GDGGfun）：
+             0lux->1.2nit 触底（自动可到硬件 1nit），2-6lux 消除低于原厂的下凹；
+             中高段 300-10000lux 在原厂基础上再提亮（1000lux 约+62%、2000lux 约+63%）；
+             约 6600lux 越过 800nit 触发 HBM 激发亮度（与 v1.8.1 相同阈值）；
+             4000-10000lux 等斜率平滑过渡，无台阶；
+             高段封顶 2200nit（P_3 面板硬件上限 1800nit，由档位表自然截断） -->
+        <lux>0,1.2</lux>
+        <lux>2,8</lux>
+        <lux>4,18</lux>
+        <lux>6,26</lux>
+        <lux>8,34</lux>
+        <lux>10,43</lux>
+        <lux>15,57</lux>
+        <lux>20,69</lux>
+        <lux>25,86</lux>
+        <lux>30,98</lux>
+        <lux>40,106</lux>
+        <lux>60,114</lux>
+        <lux>95,122</lux>
+        <lux>100,124</lux>
+        <lux>200,148</lux>
+        <lux>300,164</lux>
+        <lux>400,180</lux>
+        <lux>500,196</lux>
+        <lux>600,212</lux>
+        <lux>700,228</lux>
+        <lux>800,244</lux>
+        <lux>900,260</lux>
+        <lux>1000,276</lux>
+        <lux>1100,292</lux>
+        <lux>1200,308</lux>
+        <lux>1300,324</lux>
+        <lux>1400,340</lux>
+        <lux>1500,356</lux>
+        <lux>1600,372</lux>
+        <lux>1700,388</lux>
+        <lux>1800,404</lux>
+        <lux>1900,420</lux>
+        <lux>2000,440</lux>
+        <lux>4000,580</lux>
+        <lux>5000,664</lux>
+        <lux>6000,748</lux>
+        <lux>7000,832</lux>
+        <lux>8000,916</lux>
+        <lux>9000,1000</lux>
+        <lux>10000,1084</lux>
+        <lux>11667,1160</lux>
+        <lux>15000,1340</lux>
+        <lux>30000,1750</lux>
+        <lux>40000,1950</lux>
+        <lux>65000,2130</lux>
+        <lux>90000,2180</lux>
+        <lux>115000,2200</lux>
+        <lux>150000,2200</lux>
+        <lux>180000,2200</lux>
+        <lux>226500,2200</lux>
+        <lux>273000,2200</lux>
+    </lux_table>
+</root>

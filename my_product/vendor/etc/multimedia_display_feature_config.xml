@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<filter-conf>
+    <version>20251030</version>
+    <toggle>1</toggle>
+    <features>
+        <feature name="BindCore" enable="0">
+            <bigcore_id>4</bigcore_id>
+            <bigcore_id>5</bigcore_id>
+            <bigcore_id>6</bigcore_id>
+            <bigcore_id>7</bigcore_id>
+        </feature>
+
+        <feature name="LocalHdr" enable="1">
+            <support10bit>enable</support10bit>
+        </feature>
+
+        <feature name="GameEdr" enable="1">
+        </feature>
+
+        <feature name="GpuSwFence" enable="1">
+        </feature>
+
+        <feature name="DynamicBuffer" enable="1">
+            <application name="com.tencent.tmgp.sgame"></application>
+            <application name="com.tencent.tmgp.pubgmhd"></application>
+            <application name="com.tencent.jkchess"></application>
+            <application name="com.tencent.tmgp.dfm"></application>
+            <application name="com.tencent.KiHan"></application>
+            <application name="com.tencent.tmgp.cf"></application>
+            <application name="com.tencent.lolm"></application>
+            <application name="com.happyelements.AndroidAnimal"></application>
+            <application name="com.tencent.mf.uam"></application>
+            <application name="com.miHoYo.Yuanshen"></application>
+            <application name="com.miHoYo.hkrpg"></application>
+            <application name="com.netease.party.nearme.gamecenter"></application>
+            <application name="com.tencent.tmgp.cod"></application>
+            <application name="com.tencent.tmgp.supercell.clashofclans"></application>
+            <application name="com.netease.mc.nearme.gamecenter"></application>
+            <application name="com.netease.yyslscn"></application>
+            <application name="com.kurogame.mingchao"></application>
+            <application name="com.tencent.tmgp.speedmobile"></application>
+            <application name="com.tencent.tmgp.dnf"></application>
+            <application name="com.miHoYo.Nap"></application>
+            <application name="com.qqgame.hlddz"></application>
+            <application name="com.netease.dwrg.nearme.gamecenter"></application>
+            <application name="com.netease.l22"></application>
+            <application name="com.hypergryph.arknights"></application>
+            <application name="com.netease.dwrg"></application>
+            <application name="com.netease.sky.nearme.gamecenter"></application>
+            <application name="com.netease.l22.nearme.gamecenter"></application>
+            <application name="com.minitech.miniworld.nearme.gamecenter"></application>
+            <application name="com.tencent.nikke"></application>
+            <application name="com.qqgame.happymj"></application>
+            <application name="com.tencent.tmgp.supercell.brawlstars"></application>
+            <application name="cn.jj"></application>
+            <application name="com.meta.box"></application>
+            <application name="com.netease.sky"></application>
+            <application name="com.kiloo.subwaysurf"></application>
+            <application name="com.netease.qrsj"></application>
+            <application name="com.pi.czrxdfirst"></application>
+            <application name="com.tencent.nba2kx"></application>
+            <application name="com.tencent.nfsonline"></application>
+            <application name="com.sofunny.Sausage"></application>
+            <application name="com.netease.qrsj.nearme.gamecenter"></application>
+            <application name="com.tencent.tiyan.KiHan"></application>
+            <application name="com.sgshd.nearme.gamecenter"></application>
+            <application name="com.netease.dfjs.nearme.gamecenter"></application>
+            <application name="com.tencent.tmgp.supercell.clashroyale"></application>
+            <application name="com.ztgame.bob.op.nearme.gamecenter"></application>
+            <application name="com.blizzard.wtcg.hearthstone"></application>
+            <application name="com.tencent.hhw"></application>
+            <application name="com.tuyoo.doudizhu.android3d.nearme.gamecenter"></application>
+            <application name="com.netease.race"></application>
+        </feature>
+
+        <feature name="HdrGeneric" enable="1">
+        </feature>
+
+        <feature name="OplusFeature2Flag" enable="1">
+            <predictComposition>0</predictComposition>
+            <disableDeepcache>0</disableDeepcache>
+            <oplusDcFps>1</oplusDcFps>
+        </feature>
+
+        <feature name="AutoTimeStampSmooth" enable="1">
+            <layer name="plugin.brandservice.ui.flutter.BizFlutterTLFlutterViewActivity"></layer>
+            <layer name="plugin.ting.TingFlutterActivity"></layer>
+            <layer name="plugin.lite.ui.WxaLiteAppLiteUI"></layer>
+            <layer name="plugin.topstory.ui.home.TopStoryHomeUI"></layer>
+            <layer name="SurfaceView[com.baidu.searchbox/com.baidu.searchbox.godeye.CodeScannerActivity](BLAST)"></layer>
+            <layer name="SurfaceView[com.tencent.mm/com.tencent.mm.plugin.textstatus.ui.TextStatusDoWhatActivityV2](BLAST)"></layer>
+        </feature>
+
+        <feature name="curtain" enable="1">
+            <application name="com.tencent.qqlive">
+                <scene type="FuzzyLayer">
+                    <layer>VideoDetailKmmActivityBk</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>VideoDetailActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.youku.phone">
+                <scene type="FuzzyLayer">
+                    <layer>DetailActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="tv.danmaku.bili">
+                <scene type="FuzzyLayer">
+                    <layer>VideoDetailsActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>LiveRoomActivityV3</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>BangumiDetailActivityV3</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>StoryVideoActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>UnitedBizDetailsActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>StoryTransparentActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+        </feature>
+
+        <feature name="VideoCastAdaptive" enable="1">
+            <application name="com.tencent.qqlive">
+                <scene type="FuzzyLayer">
+                    <layer>VideoDetailKmmActivityBk</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+                <scene type="FuzzyLayer">
+                    <layer>VideoDetailActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.youku.phone">
+                <scene type="FuzzyLayer">
+                    <layer>DetailActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.qiyi.video">
+                <scene type="FuzzyLayer">
+                    <layer>PlayerActivity</layer>
+                    <action>
+                        <mode>SurfaceView</mode>
+                    </action>
+                </scene>
+            </application>
+        </feature>
+
+        <feature name="OplusDEE" enable="1">
+            <DC>enable</DC>
+            <globalLTM>enable</globalLTM>
+            <application name="com.coloros.video">
+                <scene type="Application">
+                    <action>
+                        <mode>AD</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.oplus.camera">
+                <scene type="Application">
+                    <action>
+                        <mode>AD</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.coloros.gallery3d">
+                <scene type="Application">
+                    <action>
+                        <mode>AD</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.oneplus.gallery">
+                <scene type="Application">
+                    <action>
+                        <mode>AD</mode>
+                    </action>
+                </scene>
+            </application>
+            <application name="com.heytap.yoli">
+                <scene type="Application">
+                    <action>
+                        <mode>AD</mode>
+                    </action>
+                </scene>
+            </application>
+        </feature>
+    </features>
+</filter-conf>
