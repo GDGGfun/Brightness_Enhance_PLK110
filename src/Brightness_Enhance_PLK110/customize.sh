@@ -32,7 +32,7 @@ set_perm_recursive $MODPATH/my_product/vendor/etc 0 0 0755 0644 u:object_r:vendo
 
 # ============ 第一行：署名 ============
 ui_print "- 作者：酷安@GDGGfun"
-ui_print "- [OnePlus 15 自动亮度优化增强] v1.8.5"
+ui_print "- [OnePlus 15 自动亮度优化增强] v1.9"
 ui_print "- 挂载：依赖 KernelSU 元模块（不在 post-fs-data 自行 mount --bind）"
 ui_print "- 权限与 SELinux 上下文：安装时用官方 set_perm_recursive 一次设好"
 ui_print "- 新增 WebUI：实时环境光 / 屏幕亮度 / 曲线工作点"

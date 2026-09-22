@@ -40,6 +40,12 @@ KernelSU / Magisk 模块 —— 一加 15（PLK110 / OP60FFL1 / CPH2747）
 3. **重启手机**生效
 4. 重启后可在管理器里点击本模块的 **WebUI 快捷入口**，查看实时亮度与曲线
 
+> **国内下载加速**：若 GitHub 下载缓慢，可在**安装包的下载链接**前拼接
+> `https://gh-proxy.org/` 走加速通道，例如
+> `https://gh-proxy.org/https://github.com/GDGGfun/Brightness_Enhance_PLK110/releases/download/...`
+> （只对文件下载链接有效；`/releases/latest` 这类**网页链接不适用**——代理对网页返回 403。）
+> 模块内置的更新检查（KernelSU 管理器里点「更新」）已默认走该加速通道，无需手动操作。
+
 > **机型不匹配提示**：非一加 15 刷入时会在安装阶段弹出二次确认，
 > 按 **音量 +** 强制安装、按 **音量 −** 取消。
 
@@ -76,8 +82,10 @@ KernelSU 管理器正常卸载即可。本模块**只做挂载覆盖，不写入
 
 ## 更新日志
 
-各版本的详细更新内容见
-[Releases](https://github.com/GDGGfun/Brightness_Enhance_PLK110/releases) 页面。
+各版本的详细更新内容见 [CHANGELOG.md](CHANGELOG.md)。
+
+> 该文件也是模块更新检查读取的更新说明（KernelSU 管理器点「更新」时会以内嵌
+> Markdown 形式展示），因此只写具体更新内容。
 
 ## 免责声明
 
