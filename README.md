@@ -39,8 +39,6 @@
 
 酷安：**@天伞桜** ｜ **@雾织途_** ｜ **@官宣吖** ｜ **@未晞月诶嘿** ｜ **@呆又萌**
 
-以及 [KernelSU](https://github.com/tiann/KernelSU)、
-[Kam](https://github.com/MemDeco-WG/Kam) 等开源项目。
 
 ## 免责声明
 
