@@ -1,8 +1,8 @@
 id=Brightness_Enhance_PLK110
 name=[OnePlus 15] 自动亮度优化增强
-version=v1.9.2
-versionCode=192
-versionDate=2026/09/24
+version=v1.9.3
+versionCode=193
+versionDate=2026/09/25
 adapter=OnePlus15
 author=@GDGGfun
 description=调整自动亮度曲线，提高最大亮度至2200nit，降低激发亮度阈值，亮度可自动1nit，移除导航应用亮度特调，WebUI拓展功能

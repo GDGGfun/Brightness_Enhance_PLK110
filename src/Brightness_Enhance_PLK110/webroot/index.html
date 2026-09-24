@@ -107,10 +107,24 @@
       <div class="card-head"><h2>提取配置文件</h2></div>
       <p class="note">
         若模块不支持你的手机，请使用此功能；若在支持机型上出现未知 bug，也请使用此功能。<br>
+        提取内容为显示相关的系统配置（按原机目录结构保留）与本模块自带配置。<br>
+        需要<strong>原机（未挂载）版本</strong>时：先用下方「模块开关」关闭模块并重启，再点此按钮。<br>
         仅读取系统显示配置，<strong>不会读取任何隐私文件</strong>，请放心使用。
       </p>
       <button class="btn wide" id="btnCfg">提取配置文件</button>
       <p class="tip" id="tipCfg"></p>
+
+      <hr class="divider">
+
+      <!-- 模块开关：写/删 skip_mount 后重启生效（急救用，避免型号不适配时反复刷模块） -->
+      <div class="sw-row">
+        <span class="sw-k">模块开关</span>
+        <label class="switch">
+          <input type="checkbox" id="swMod">
+          <span class="track"></span>
+        </label>
+      </div>
+      <p class="tip" id="tipMod"></p>
     </section>
 
   </section>
@@ -155,6 +169,18 @@
     <span class="spin"></span>
     <p class="loading-txt" id="loadTxt">正在采集…</p>
     <p class="loading-sub" id="loadSub">请勿退出或重复点击</p>
+  </div>
+</div>
+
+<!-- 危险操作确认弹窗（模块开关会重启设备） -->
+<div class="modal" id="confirm" hidden>
+  <div class="modal-box">
+    <h3 id="cTitle">确认</h3>
+    <p class="modal-note" id="cNote"></p>
+    <div class="modal-btns">
+      <button class="btn" id="cNo">取消</button>
+      <button class="btn danger" id="cYes">确定并重启</button>
+    </div>
   </div>
 </div>
 

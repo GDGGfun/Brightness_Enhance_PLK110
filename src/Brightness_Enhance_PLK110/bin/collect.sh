@@ -59,8 +59,9 @@ grab /system_ext/etc      system_ext/etc
 grab /odm/etc             odm/etc
 grab /system/etc          system/etc
 
-# 模块生效时上面的路径看到的是模块内容（原机版被挂载盖住），
-# 因此额外把模块自身那份也收进来，便于对照"原机 vs 模块"。
+# 模块生效时，被覆盖的那几个文件看到的是模块内容；要拿纯原机版就先用 WebUI
+# 「模块开关」关闭模块并重启（重启后这些路径读到即原机文件），再点本按钮。
+# 这里额外把模块自身那份也收进来，便于对照"当前生效 vs 模块自带"。
 if [ -d "$MODDIR/my_product/vendor/etc" ]; then
   mkdir -p "$WORK/_module/my_product/vendor" 2>/dev/null
   cp -a "$MODDIR/my_product/vendor/etc" "$WORK/_module/my_product/vendor/etc" 2>/dev/null

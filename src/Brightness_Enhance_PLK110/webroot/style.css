@@ -62,6 +62,8 @@ body{
 .note{ margin:0 0 12px; color:var(--fg2); font-size:13px; }
 .note strong{ color:var(--fg); }
 .note b{ color:var(--fg); }
+.note .warn{ color:var(--warn); }
+.note .warn strong{ color:var(--warn); }
 
 /* ---------- 曲线 ---------- */
 .chart-wrap{ width:100%; overflow:hidden; border-radius:10px; background:var(--panel2); }
@@ -104,6 +106,25 @@ body{
 
 .tip{ margin:10px 0 0; font-size:12px; color:var(--fg2); }
 .tip:empty{ display:none; }
+.tip.bad{ color:var(--bad); }
+
+/* ---------- 卡片内分隔与开关行 ---------- */
+.divider{ border:0; border-top:1px solid var(--line); margin:14px 0; }
+.sw-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.sw-k{ font-size:13px; }
+.switch{ position:relative; display:inline-block; flex:0 0 auto; }
+.switch input{ position:absolute; opacity:0; width:0; height:0; }
+.switch .track{
+  display:block; width:48px; height:28px; border-radius:14px;
+  background:var(--panel2); border:1px solid var(--line); transition:background .18s, border-color .18s;
+}
+.switch .track::after{
+  content:""; display:block; width:22px; height:22px; margin:2px; border-radius:50%;
+  background:var(--fg2); transition:transform .18s, background .18s;
+}
+.switch input:checked + .track{ background:var(--acc); border-color:var(--acc); }
+.switch input:checked + .track::after{ transform:translateX(20px); background:#fff; }
+.switch input:disabled + .track{ opacity:.5; }
 
 /* ---------- 采集进行中遮罩 ---------- */
 .loading{
@@ -144,6 +165,7 @@ body{
 .modal-btns{ display:flex; gap:10px; }
 .modal-btns .btn{ flex:1; }
 .btn.primary{ background:var(--acc); border-color:var(--acc); color:#fff; }
+.btn.danger{ background:var(--bad); border-color:var(--bad); color:#fff; }
 
 /* ---------- 定义列表 ---------- */
 .kv{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 14px; font-size:13px; }

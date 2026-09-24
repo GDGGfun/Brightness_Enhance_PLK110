@@ -8,13 +8,16 @@
 #   注：KernelSU 的安装器只在 install.sh 老式模块分支处理 SKIPMOUNT（ksud/src/installer.sh:396），
 #   本模块走 customize.sh 分支，故该变量在 KSU 下本就不起作用。
 SKIPMOUNT=false
-PROPFILE=false
+PROPFILE=true
 POSTFSDATA=false
-LATESTARTSERVICE=false
+LATESTARTSERVICE=true
 
 # 权限：目录 0755 / 文件 0644，须与原机一致。
 # 0777 会被 ApolloService 等显示 HAL 拒绝解析（GetApolloPanelNit error mParser），引发相机、相册亮度异常
 set_perm_recursive $MODPATH 0 0 0755 0644
+# 不依赖可执行位，故上面的 0644 不会影响它们。
+
+# 元模块的 metamount.sh 排在 post-fs-data.sh 之后，所以那一刻读到的
 
 # 署名
 ui_print "*********************************************"
@@ -32,10 +35,10 @@ if [ "$device" = "OP60FFL1" ] || [ "$model" = "PLK110" ] || [ "$model" = "CPH274
 else
     ui_print "#############################################"
     ui_print "!!!                                       !!!"
-    ui_print "!!!  [警告] 模块不适配当前机型！               !!!"
-    ui_print "!!!  当前机型: $model / $device"
+    ui_print "!!!  [警告] 模块不适配当前机型/系统！           !!!"
+    ui_print "!!!  当前机型: $model / $device             !!!"
     ui_print "!!!  本模块仅适配一加15 (PLK110)             !!!"
-    ui_print "!!!                                       !!!"
+    ui_print "!!!  本模块仅适配ColorOS 16                 !!!"
     ui_print "!!!  [注意] 安装后模块配置不会生效，            !!!"
     ui_print "!!!   但仍可以使用webui部分功能               !!!"
     ui_print "!!!                                       !!!"
@@ -44,8 +47,6 @@ else
 
     # 机型不匹配：禁止挂载，只保留 WebUI 功能。
     # 真正让元模块跳过的是 skip_mount —— 元模块不认 skip_mountify（那是 Mountify 的标识）。
-    # 同时移除 post-mount 兜底脚本，否则它会把配置重新 bind 上去。
     SKIPMOUNT=true
     touch "$MODPATH/skip_mount"
-    rm -f "$MODPATH/post-mount.sh"
 fi

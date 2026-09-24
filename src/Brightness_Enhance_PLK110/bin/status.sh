@@ -104,7 +104,7 @@ peak=$(peak_nit);            [ -n "$peak" ] || peak=0
 pct=$(awk -v r="$raw" -v a="$bmin" -v b="$bmax" 'BEGIN{d=b-a; if(d<=0)d=1; p=(r-a)*100/d; if(p<0)p=0; if(p>100)p=100; printf "%.1f", p}')
 
 # 生效判定：挂载点上的面板配置与本模块内的同名文件一致即为生效；
-# 机型不匹配时 customize.sh 会写入 skip_mount 并移除 post-mount.sh
+# 机型不匹配时 customize.sh 会写入 skip_mount（WebUI 的模块开关也写它）
 eff=0
 SRCF=$MODDIR/my_product/vendor/etc/${CFG##*/}
 if [ -f "$SRCF" ] && [ -f "$CFG" ]; then
@@ -112,7 +112,17 @@ if [ -f "$SRCF" ] && [ -f "$CFG" ]; then
   b=$(md5sum "$CFG" 2>/dev/null | cut -d' ' -f1)
   [ -n "$a" ] && [ "$a" = "$b" ] && eff=1
 fi
-[ -f "$MODDIR/skip_mount" ] && eff=0
+# 模块开关状态：skip_mount 存在 = 已禁用（元模块与 KSU 管理器都会跳过挂载本模块）
+if [ -f "$MODDIR/skip_mount" ]; then sm=1; eff=0; else sm=0; fi
+
+# 机型适配判定：条件必须与 customize.sh 的检测保持一致（device/model 三选一），改动要两处同步
+dev=$(getprop ro.product.device 2>/dev/null)
+mdl=$(getprop ro.product.model 2>/dev/null)
+if [ "$dev" = "OP60FFL1" ] || [ "$mdl" = "PLK110" ] || [ "$mdl" = "CPH2747" ]; then
+  match=1
+else
+  match=0
+fi
 
 # 系统版本（用户可见）：ro.build.display.id 形如 PLK110_16.0.3.503(CN01) -> 16.0.3.503（CN01）
 sysver=$(getprop ro.build.display.id 2>/dev/null | sed -n 's/^[^_]*_//p' | sed 's/(/（/g; s/)/）/g')
@@ -148,13 +158,15 @@ ulim=$(printf '%s\n' "$DD" | grep -o 'mLimitNit *= *[0-9][0-9]*' | head -1 | gre
 
 echo "update=$(getprop ro.build.version.ota 2>/dev/null | tr -d '[]' | cut -d, -f1)"
 echo "sysver=$sysver"
-echo "model=$(getprop ro.product.model 2>/dev/null)"
+echo "model=$mdl"
+echo "device_match=$match"
 echo "modver=$modver"
 echo "modname=$modname"
 echo "appver=$appver"
 echo "panel=$PANEL"
 echo "panel_name=$PANEL_NAME"
 echo "effective=$eff"
+echo "skip_mount=$sm"
 echo "screen=$scr"
 echo "hbm=$hbm"
 echo "hbm_sys=$hbm_sys"
