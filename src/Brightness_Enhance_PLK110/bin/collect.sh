@@ -31,17 +31,21 @@ rm -rf "$WORK" 2>/dev/null
 mkdir -p "$WORK" 2>/dev/null
 [ -d "$WORK" ] || { echo "RESULT=ERR|无法创建输出目录 $WORK"; exit 1; }
 
-# 显示/亮度相关的文件名特征
-PATTERN='*display* *brightness* *panel* *demura* *dbvgain* *eyeprotect* *apollo* *backlight* *ltm_* *hbm* *nit*'
-
-# 把 <src> 下匹配特征的文件按原目录结构镜像到 <WORK>/<base>
+# 把 <src> 下匹配特征的文件按原目录结构镜像到 <WORK>/<base>。
+# 用单条 find 覆盖全部特征（原来 5 目录 × 11 特征 = 55 次 find 进程，每次都走一遍 sdcardfs）。
+# 刻意不含 '*nit*'：文件名里的 "i-nit" 会连 init*.rc 一起命中，实测多带 59 个与亮度无关的
+# init 脚本；而真正需要的 ..._100nit.odf / ..._2nits_pGC.txt 面板标定都含 "_panel_"，
+# 已被 '*panel*' 覆盖，去掉它不会丢素材。
 grab() {
   src=$1
   base=$2
   [ -d "$src" ] || return 0
-  for pat in $PATTERN; do
-    find "$src" -maxdepth 2 -type f -iname "$pat" 2>/dev/null
-  done | sort -u | while IFS= read -r f; do
+  find "$src" -maxdepth 2 -type f \( \
+        -iname '*display*'    -o -iname '*brightness*' -o -iname '*panel*' \
+     -o -iname '*demura*'     -o -iname '*dbvgain*'    -o -iname '*eyeprotect*' \
+     -o -iname '*apollo*'     -o -iname '*backlight*'  -o -iname '*ltm*' \
+     -o -iname '*hbm*' \) 2>/dev/null \
+  | sort -u | while IFS= read -r f; do
     rel=${f#"$src"/}
     d="$WORK/$base/$(dirname "$rel")"
     mkdir -p "$d" 2>/dev/null

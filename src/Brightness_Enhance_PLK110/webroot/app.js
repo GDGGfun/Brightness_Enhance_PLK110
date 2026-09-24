@@ -299,62 +299,132 @@ var busy = false;
 
 function emptyText(id) { var e = $(id); if (e) e.textContent = ''; }
 
-function showModal(title, path, note, shareable) {
+/* 采集脚本要跑数秒。先让浏览器把遮罩画出来再调用 ksu.exec，
+   否则阻塞式调用会把渲染一起卡住，用户看到的就是「点了没反应」。 */
+function nextFrame(fn) {
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(function () { setTimeout(fn, 0); });
+  } else {
+    setTimeout(fn, 30);
+  }
+}
+
+function showLoading(title, sub) {
+  setText('loadTxt', title);
+  setText('loadSub', sub);
+  var el = $('loading');
+  if (el) el.hidden = false;
+}
+
+function hideLoading() { var el = $('loading'); if (el) el.hidden = true; }
+
+/* 结果弹窗：显示文件路径 + 「复制路径」+「完成」。
+   不做系统分享 —— Android 不允许 root/shell 身份把公共目录里的非媒体文件授权给
+   微信 / QQ（真机实测接收方 open failed: EACCES），自建 dex 借 documentsui 身份的路子
+   在设备上也走不通（app_process 在受限 domain 下静默 abort）。详见
+   .开发/skills/反馈页采集功能.md §4。 */
+function showModal(title, path, note) {
   setText('mTitle', title);
   setText('mPath', path || '--');
   setText('mNote', note || '');
   var m = $('modal');
   if (m) m.hidden = false;
-  var sb = $('mShare');
-  if (sb) {
-    sb.disabled = !shareable;
-    sb.onclick = shareable ? function () { shareFile(path); } : null;
+  var cb = $('mCopy');
+  if (cb) {
+    cb.disabled = !path;
+    cb.onclick = path ? function () {
+      copyText(path).then(function () {
+        cb.textContent = '已复制';
+        setTimeout(function () { cb.textContent = '复制路径'; }, 1600);
+      }, function () {
+        cb.textContent = '请长按路径复制';
+      });
+    } : null;
   }
 }
 
 function hideModal() { var m = $('modal'); if (m) m.hidden = true; }
 
-/* WebView 里没有 Web Share API，交给系统的分享面板 */
-function shareFile(path) {
-  if (!path) return;
-  return sh('am start -a android.intent.action.SEND -t "application/gzip" ' +
-            '--eu android.intent.extra.STREAM "file://' + path + '" --grant-read-uri-permission');
+/* 下载目录里的文件必须转成 content:// 才能分享：
+   Android 7 起接收方读不到 file://（scoped storage），会直接提示「文件不存在」。
+   借系统自带的 externalstorage DocumentsProvider 构造 content URI，无需 FileProvider。 */
+/* 复制文本到剪贴板。
+   真机没有 `cmd clipboard`（实测 "No shell command implementation."），所以只能走前端：
+   优先 Clipboard API（需要安全上下文），失败退回 execCommand —— WebView 里一般都可用。 */
+function copyText(text) {
+  if (!text) return Promise.reject(new Error('empty'));
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '-1000px';
+  ta.setAttribute('readonly', '');
+  document.body.appendChild(ta);
+  ta.select();
+  ta.setSelectionRange(0, text.length);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok ? Promise.resolve() : Promise.reject(new Error('execCommand failed'));
 }
 
 /* 采集脚本约定最后一行输出：RESULT=OK|路径|字节|名称|文件数 */
+var SCRIPT_TIP = {
+  'log.sh': '正在收集日志并本地脱敏，请勿退出',
+  'collect.sh': '正在提取系统显示配置，请勿退出'
+};
+
 function runTask(btnId, tipId, script, label) {
   if (busy) return;
   busy = true;
   var b = $(btnId);
-  if (b) { b.disabled = true; b.textContent = label + '…'; }
+  var settled = false;
+  if (b) { b.disabled = true; b.textContent = label + '中…'; }
   emptyText(tipId);
 
-  sh('sh ' + MODDIR + '/bin/' + script).then(function (r) {
+  function fail(msg) {
+    var e = $(tipId);
+    if (e) e.textContent = '执行失败：' + msg;
+  }
+
+  function done(r) {
+    if (settled) return;
+    settled = true;
     busy = false;
+    hideLoading();
     if (b) { b.disabled = false; b.textContent = label; }
 
     var line = '';
     ((r && r.stdout) || '').split('\n').forEach(function (l) {
+      l = l.replace(/\r$/, '').trim();
       if (l.indexOf('RESULT=') === 0) line = l;
     });
     if (!line) {
-      var e = $(tipId);
-      if (e) e.textContent = '执行失败：' + ((r && r.stderr) || '脚本无输出');
+      fail('脚本没有返回结果' + ((r && r.stderr) ? ('：' + r.stderr) : '') +
+           '。若下载文件夹里已出现新压缩包，说明采集本身已成功，可直接取用。');
       return;
     }
     var p = line.slice(7).split('|');
-    if (p[0] !== 'OK') {
-      var e2 = $(tipId);
-      if (e2) e2.textContent = '执行失败：' + (p[1] || '未知错误');
-      return;
-    }
+    if (p[0] !== 'OK') { fail(p[1] || '未知错误'); return; }
+
     var path = p[1], size = parseInt(p[2] || '0', 10), name = p[3];
     var extra = p[4] ? ('，含 ' + p[4] + ' 个文件') : '';
     var t = $(tipId);
     if (t) t.textContent = '已完成：' + name;
     showModal('已完成', path,
-      '大小 ' + (size / 1024).toFixed(1) + ' KB' + extra + '，已保存到系统下载文件夹。',
-      true);
+      '大小 ' + (size / 1024).toFixed(1) + ' KB' + extra +
+      '，已存入下载文件夹。发给微信 / QQ / TIM 请用它们的「+ → 文件」入口从下载目录选取' +
+      '——这些应用没有「所有文件访问」权限，无法直接接收公共目录里的压缩包。');
+  }
+
+  showLoading(label + '中…', SCRIPT_TIP[script] || '请勿退出或重复点击');
+  // 兜底：万一 exec 既不回调也不返回，遮罩也不能永久盖住界面
+  var guard = setTimeout(function () { done({ stderr: '等待超时' }); }, 120000);
+  nextFrame(function () {
+    sh('sh ' + MODDIR + '/bin/' + script).then(function (r) { clearTimeout(guard); done(r); },
+                                               function () { clearTimeout(guard); done({}); });
   });
 }
 

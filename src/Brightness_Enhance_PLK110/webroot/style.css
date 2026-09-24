@@ -105,6 +105,25 @@ body{
 .tip{ margin:10px 0 0; font-size:12px; color:var(--fg2); }
 .tip:empty{ display:none; }
 
+/* ---------- 采集进行中遮罩 ---------- */
+.loading{
+  position:fixed; inset:0; background:#000b; z-index:60;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.loading[hidden]{ display:none; }
+.loading-box{
+  background:var(--panel); border:1px solid var(--line); border-radius:16px;
+  padding:26px 24px; text-align:center; min-width:210px;
+}
+.spin{
+  display:block; width:30px; height:30px; margin:0 auto 14px;
+  border:3px solid var(--line); border-top-color:var(--acc); border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.loading-txt{ margin:0 0 5px; font-size:14px; font-weight:600; }
+.loading-sub{ margin:0; font-size:12px; color:var(--fg2); }
+
 /* ---------- 结果弹窗 ---------- */
 .modal{
   position:fixed; inset:0; background:#000a; z-index:50;

@@ -149,6 +149,15 @@
 
 </main>
 
+<!-- 采集进行中：脚本要跑数秒，必须有明确反馈，否则用户会以为没反应 -->
+<div class="loading" id="loading" hidden>
+  <div class="loading-box">
+    <span class="spin"></span>
+    <p class="loading-txt" id="loadTxt">正在采集…</p>
+    <p class="loading-sub" id="loadSub">请勿退出或重复点击</p>
+  </div>
+</div>
+
 <!-- 结果弹窗 -->
 <div class="modal" id="modal" hidden>
   <div class="modal-box">
@@ -156,7 +165,7 @@
     <p class="modal-path" id="mPath">--</p>
     <p class="modal-note" id="mNote"></p>
     <div class="modal-btns">
-      <button class="btn" id="mShare">系统分享</button>
+      <button class="btn" id="mCopy">复制路径</button>
       <button class="btn primary" id="mDone">完成</button>
     </div>
   </div>

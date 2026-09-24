@@ -81,12 +81,13 @@ cp "$MODDIR/module.prop" "$WORK/module.txt" 2>/dev/null
 [ -f "$MODDIR/skip_mount" ] && echo "skip_mount=1" >> "$WORK/module.txt" 2>/dev/null
 
 # ---------- 采集：连续采样（观察亮度变化） ----------
+# 采样是主要耗时来源（每次 dumpsys + sleep），3 次足以看出变化趋势
 {
-  for i in 1 2 3 4 5; do
+  for i in 1 2 3; do
     echo "--- 采样 $i ---"
     dumpsys display 2>/dev/null | grep -E 'mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mScreenBrightnessNormalMaximum|mScreenBrightnessRangeMaximum|mCachedBrightnessInfo'
     echo
-    sleep 1
+    [ "$i" = 3 ] || sleep 1
   done
 } > "$WORK/sample.txt" 2>/dev/null
 
@@ -113,16 +114,22 @@ pkg() {
     "$1" 2>/dev/null
 }
 
+# 一次 sed 同时做 PII 与包名两级（$2=1 才做包名级）；一次 awk 统计三类占位符行数。
+# 原实现是每文件 1~2 次 sed + 3 次 grep，9 个文件起 40 多个进程，且每次都走一遍 sdcardfs。
+sanitize() {
+  if [ "$2" = "1" ]; then pii "$1"; pkg "$1"; else pii "$1"; fi
+  echo "$3 : $(awk '/<mail>/{m++} /<num>/{n++} /<pkg>/{p++}
+                      END{printf "mail=%d num=%d pkg=%d", m+0, n+0, p+0}' "$1" 2>/dev/null)" >> "$RPT" 2>/dev/null
+}
+
 for f in "$WORK"/*.txt; do
   [ -f "$f" ] || continue
   b=${f##*/}
   [ "$b" = "SANITIZE.txt" ] && continue
-  pii "$f"
   case "$b" in
-    device.txt|backlight.txt|mounts.txt|module.txt|sample.txt) ;;  # 仅 PII 级
-    *) pkg "$f" ;;
+    device.txt|backlight.txt|mounts.txt|module.txt|sample.txt) sanitize "$f" 0 "$b" ;;  # 仅 PII 级
+    *) sanitize "$f" 1 "$b" ;;
   esac
-  echo "$b : mail=$(grep -c '<mail>' "$f" 2>/dev/null) num=$(grep -c '<num>' "$f" 2>/dev/null) pkg=$(grep -c '<pkg>' "$f" 2>/dev/null)" >> "$RPT" 2>/dev/null
 done
 
 echo "（以上计数为含该占位符的行数；若为 0 表示未检出对应内容）" >> "$RPT" 2>/dev/null
