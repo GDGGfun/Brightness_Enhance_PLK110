@@ -4,7 +4,7 @@
 		<!-- UIR 总开关 -->
         <uir_enable>1</uir_enable>
 		<!-- UIR 总亮度门限 -->
-        <brightness_nit_limit>1600</brightness_nit_limit>
+        <brightness_nit_limit>2200</brightness_nit_limit>
 		<!-- UIR 总温度门限 -->
         <temperature_limit>40000</temperature_limit>
 		<!-- UIR 最大提亮倍率 -->

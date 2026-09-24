@@ -810,8 +810,8 @@
         <nits>9999</nits>
     </dolby_temperature_limit_nit>
 
-    <!-- add for global brightness limit, others limit to 1200 except below black list-->
-    <global_brightness_limit nit="1600">
+    <!-- add for global brightness limit, others limit to 2200 except below black list-->
+    <global_brightness_limit nit="2200">
         <app>com.oplus.engineermode</app>
         <app>com.oplus.autotest.mmdisplaytool</app>
         <app>com.coloros.gallery3d</app>

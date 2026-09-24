@@ -1,0 +1,11 @@
+# 禁止 git 做任何换行转换：工作区字节 = 提交字节 = 原机字节
+#
+# 背景：本机 git core.autocrlf=true 会把工作区文件转成 CRLF，
+# 导致脚本 shebang 失效、上架包与原机基线不一致（见 .开发/skills/模块构建与打包流程.md）。
+# 模块交付物是"字节敏感"的：原机配置里有 7 个文件本身就是 CRLF，其余是 LF，
+# 任何统一转换都会破坏与原机的字节一致性。
+#
+# 配套操作（每台开发机各做一次）：
+#   git config core.autocrlf false
+#   python tools/align_line_endings.py
+* -text

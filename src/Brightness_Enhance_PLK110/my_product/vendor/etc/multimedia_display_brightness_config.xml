@@ -4,12 +4,8 @@
     <version>20260902</version>
 
     <lux_table name="expressiveness">
-        <!-- 自动亮度曲线 v1.8.2（GDGGfun）：
-             0lux->1.2nit 触底（自动可到硬件 1nit），2-6lux 消除低于原厂的下凹；
-             中高段 300-10000lux 在原厂基础上再提亮（1000lux 约+62%、2000lux 约+63%）；
-             约 6600lux 越过 800nit 触发 HBM 激发亮度（与 v1.8.1 相同阈值）；
-             4000-10000lux 等斜率平滑过渡，无台阶；
-             高段封顶 2200nit（P_3 面板硬件上限 1800nit，由档位表自然截断） -->
+        <!-- expressiveness 表：自动亮度曲线 lux->nit（51 点）。
+             0lux=1.2nit 触底；峰值 2200nit；曲线于 lux≈6619 处达 800nit -->
         <lux>0,1.2</lux>
         <lux>2,8</lux>
         <lux>4,18</lux>

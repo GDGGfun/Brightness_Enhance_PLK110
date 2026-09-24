@@ -2,83 +2,165 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>自动亮度优化增强</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="hd">
-  <div class="hd-l">
-    <h1>[OnePlus 15] 自动亮度优化增强</h1>
-    <p class="sub">
-      <span id="modver">--</span>
-      <span class="dot">·</span> 面板 <b id="panel">--</b>
-      <span class="dot">·</span> <span id="update">--</span>
-    </p>
+  <h1>[OnePlus 15] 自动亮度优化增强</h1>
+  <div class="hd-meta">
+    <span class="dot" id="dot"></span>
+    <span id="eff">读取中</span>
+    <span class="sep">·</span>
+    <span id="sub">--</span>
   </div>
-  <span class="badge" id="badge">读取中…</span>
 </header>
 
+<nav class="tabs">
+  <button class="tab on" data-page="home">首页</button>
+  <button class="tab" data-page="fb">反馈</button>
+  <button class="tab" data-page="about">关于</button>
+</nav>
+
 <main>
-  <!-- 实时读数 -->
-  <section class="card">
-    <div class="card-head">
-      <h2>实时读数</h2>
-      <span class="hint" id="tick">--</span>
-    </div>
 
-    <div class="grid">
-      <div class="stat">
-        <div class="stat-k">环境光</div>
-        <div class="stat-v"><span id="lux">--</span><i>lux</i></div>
-        <div class="stat-b"><div class="bar"><i id="luxBar"></i></div></div>
+  <!-- ============ 首页 ============ -->
+  <section class="page on" id="page-home">
+
+    <p class="msg" id="msg"></p>
+
+    <!-- 曲线 -->
+    <section class="card">
+      <div class="card-head">
+        <h2>自动亮度曲线</h2>
+        <span class="hint">lux → nit（对数横轴）</span>
       </div>
+      <div class="chart-wrap">
+        <canvas id="chart" width="1200" height="660"></canvas>
+      </div>
+      <div class="legend">
+        <span><i class="sw sw-curve"></i>曲线</span>
+        <span><i class="sw sw-th"></i>激发阈值 <b id="thTxt">--</b></span>
+        <span><i class="sw sw-peak"></i>面板峰值 <b id="peakTxt">--</b></span>
+        <span><i class="sw sw-real"></i>实际</span>
+        <span><i class="sw sw-goal"></i>目标</span>
+      </div>
+    </section>
 
-      <div class="stat">
-        <div class="stat-k">屏幕亮度</div>
-        <div class="stat-v"><span id="nit">--</span><i>nit</i></div>
-        <div class="stat-b">
-          <span class="mini">原始值 <b id="raw">--</b> / <b id="bmax">--</b></span>
-          <span class="mini">亮度条 <b id="pct">--</b>%</span>
+    <!-- 实时亮度信息 -->
+    <section class="card">
+      <div class="card-head"><h2>实时亮度</h2></div>
+      <div class="rows">
+        <div class="row">
+          <span class="k">环境光</span>
+          <span class="v"><b id="lux">--</b><i>lux</i></span>
+        </div>
+        <div class="row">
+          <span class="k">屏幕亮度</span>
+          <span class="v"><b id="nit">--</b><i>nit</i><em id="pct">--</em></span>
+        </div>
+        <div class="row">
+          <span class="k">激发亮度</span>
+          <span class="v"><b id="hbm">--</b></span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="chips">
-      <span class="chip">激发亮度 <b id="hbm">--</b></span>
-      <span class="chip">屏幕 <b id="screen">--</b></span>
-      <span class="chip">亮度模式 <b id="mode">--</b></span>
-      <span class="chip">面板上限 <b id="pmaxnit">--</b> nit</span>
-      <span class="chip">app_list <b id="appver">--</b></span>
-    </div>
+    <!-- 面板参数 -->
+    <section class="metrics">
+      <div class="m">
+        <span class="m-k">手动亮度最大值</span>
+        <span class="m-v"><b id="manual">--</b><i>nit</i></span>
+      </div>
+      <div class="m">
+        <span class="m-k">亮度上限</span>
+        <span class="m-v"><b id="limit">--</b><i>nit</i></span>
+      </div>
+      <div class="m">
+        <span class="m-k">激发阈值</span>
+        <span class="m-v"><b id="th">--</b><i>nit</i></span>
+      </div>
+      <div class="m">
+        <span class="m-k">亮度模式</span>
+        <span class="m-v"><b id="mode">--</b></span>
+      </div>
+    </section>
+
   </section>
 
-  <!-- 曲线 + 工作点 -->
-  <section class="card">
-    <div class="card-head">
-      <h2>自动亮度曲线（lux → nit）</h2>
-      <span class="hint">红点＝当前工作点（实际 / 曲线目标）</span>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="chart" width="1200" height="640"></canvas>
-    </div>
-    <div class="legend">
-      <span><i class="sw sw-curve"></i>曲线</span>
-      <span><i class="sw sw-hbm"></i>800nit 激发门槛</span>
-      <span><i class="sw sw-real"></i>实际亮度</span>
-      <span><i class="sw sw-goal"></i>曲线目标</span>
-    </div>
-    <div class="workpoint">
-      当前工作点：<b id="wp">--</b>
-    </div>
+  <!-- ============ 反馈 ============ -->
+  <section class="page" id="page-fb">
+
+    <section class="card">
+      <div class="card-head"><h2>读取日志</h2></div>
+      <p class="note">
+        收集排查所需的日志素材（内核日志、logcat、display 状态等），
+        在设备本地完成脱敏后打包，放入系统<strong>下载</strong>文件夹。
+      </p>
+      <button class="btn wide" id="btnLog">读取日志</button>
+      <p class="tip" id="tipLog"></p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>提取配置文件</h2></div>
+      <p class="note">
+        若模块不支持你的手机，请使用此功能；若在支持机型上出现未知 bug，也请使用此功能。<br>
+        仅读取系统显示配置，<strong>不会读取任何隐私文件</strong>，请放心使用。
+      </p>
+      <button class="btn wide" id="btnCfg">提取配置文件</button>
+      <p class="tip" id="tipCfg"></p>
+    </section>
+
   </section>
 
-  <div class="foot">
-    <button class="btn" id="btn">立即刷新</button>
-    <span class="hint" id="msg"></span>
-  </div>
+  <!-- ============ 关于 ============ -->
+  <section class="page" id="page-about">
+
+    <section class="card">
+      <div class="card-head"><h2>模块信息</h2></div>
+      <dl class="kv">
+        <dt>名称</dt><dd id="aName">--</dd>
+        <dt>版本</dt><dd id="aVer">--</dd>
+        <dt>机型</dt><dd id="aModel">--</dd>
+        <dt>系统版本</dt><dd id="aUpdate">--</dd>
+        <dt>本机面板</dt><dd id="aPanel">--</dd>
+        <dt>app_list</dt><dd id="aApp">--</dd>
+      </dl>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>链接</h2></div>
+      <a class="lnk" id="aGh" href="#" target="_blank" rel="noopener">GitHub 项目主页</a>
+      <a class="lnk" id="aGhPx" href="#" target="_blank" rel="noopener">GitHub 加速（gh-proxy）</a>
+      <a class="lnk" id="aQq" href="#" target="_blank" rel="noopener">QQ 群</a>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>致谢</h2></div>
+      <p class="note">
+        参考了酷安 <b>@天伞桜</b> ｜ <b>@雾织途_</b> ｜ <b>@官宣吖</b> ｜
+        <b>@未晞月诶嘿</b> ｜ <b>@呆又萌</b> 的亮度模块。
+      </p>
+    </section>
+
+  </section>
+
 </main>
+
+<!-- 结果弹窗 -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-box">
+    <h3 id="mTitle">完成</h3>
+    <p class="modal-path" id="mPath">--</p>
+    <p class="modal-note" id="mNote"></p>
+    <div class="modal-btns">
+      <button class="btn" id="mShare">系统分享</button>
+      <button class="btn primary" id="mDone">完成</button>
+    </div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
