@@ -76,8 +76,11 @@ curve_points() {
 # 实时读数：只取需要的行，避免 dumpsys 全文开销
 DD=$(dumpsys display 2>/dev/null | grep -E "mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mMinBrightness=|mMaxBrightness=|mMaxPanelBrightness=|^ *mAutoBrightnessAdjustment=|mGlobalBrightnessLimitInfo|OplusFeatureUIR")
 
-# 环境光必须锚定 mLuxRecord 行：CCT 记录行同样含 StableValue，只按 StableValue 会取到色温值
-lux=$(printf '%s\n' "$DD" | sed -n 's/.*mLuxRecord.*StableValue = \([0-9.]*\).*/\1/p' | head -1)
+# 环境光：ColorOS 17 起 dumpsys 删掉了 mLuxRecord/StableValue，改成 [CurrentLuxResult] 的
+# finalLux（同段还有 realTimeLux/lastFinalLux）；ColorOS 16 仍是 mLuxRecord ... StableValue = N，
+# 且 CCT 记录行也含 StableValue，故 16 必须锚定 mLuxRecord。两者互斥，合并到一条 sed 兼容两代。
+lux=$(printf '%s\n' "$DD" | sed -n 's/.*finalLux=\([0-9.]*\).*/\1/p; s/.*mLuxRecord.*StableValue = \([0-9.]*\).*/\1/p' | head -1)
+
 raw=$(printf '%s\n' "$DD" | sed -n 's/^ *Display Brightness=\([0-9.eE+-]*\).*/\1/p' | head -1)
 scr=$(printf '%s\n' "$DD" | sed -n 's/^ *Display State=\(.*\)$/\1/p' | head -1)
 bmin=$(printf '%s\n' "$DD" | sed -n 's/^ *mMinBrightness=\([0-9.]*\).*/\1/p' | tail -1)
