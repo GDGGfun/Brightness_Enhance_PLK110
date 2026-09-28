@@ -1,10 +1,23 @@
 # 更新日志
 
-## [v1.9.4] - 2026-09-28
+## [v1.9.5] - 2026-09-28
 
 ### 修复
 
-- 环境光读取逻辑适配ColorOS17
+- 环境光读取逻辑适配 ColorOS 17：C17 的 dumpsys 改为 `[CurrentLuxResult] finalLux`，
+  不再有 `mLuxRecord/StableValue`，模块已自动兼容两代
+- **修复 ColorOS 17 上"无法激发高亮度、卡在 800nit"**：C17 在原机 app_list 里新增了
+  `DynamicBrightnessRangeSupport=1` / `DynamicBrightnessRangeDefault=0`（默认关闭动态亮度范围），
+  模块旧版用 ColorOS 16 基线的 app_list、缺这两个标签，服务回落到代码内置默认 `1`，
+  等于把这个子系统打开了（它的亮度上限表 4000–9000lux 段只给 800nit）。
+  现改为**以 ColorOS 17 原机 app_list 为基线**并保留原机开关值，子系统恢复默认关闭
+
+### 变更
+
+- `display_brightness_app_list.xml` 改用 ColorOS 17 原机为基线（应用名单随新系统更新：
+  导航类并入 `method id="6"` 且两处名单均已移除、新增 `method id="8"` 阅读/浏览器类等）
+- 温控 nit 表（`system_ext/etc/display_brightness_config_common.xml`）属**安全配置，本模块不覆盖**，
+  保持原机值
 
 ---
 

@@ -85,7 +85,7 @@ cp "$MODDIR/module.prop" "$WORK/module.txt" 2>/dev/null
 {
   for i in 1 2 3; do
     echo "--- 采样 $i ---"
-    dumpsys display 2>/dev/null | grep -E 'mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mScreenBrightnessNormalMaximum|mScreenBrightnessRangeMaximum|mCachedBrightnessInfo'
+    dumpsys display 2>/dev/null | grep -E 'CurrentLuxResult|finalLux|mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mScreenBrightnessNormalMaximum|mScreenBrightnessRangeMaximum|mCachedBrightnessInfo'
     echo
     [ "$i" = 3 ] || sleep 1
   done

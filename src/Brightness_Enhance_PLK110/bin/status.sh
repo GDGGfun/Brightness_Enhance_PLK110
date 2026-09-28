@@ -74,11 +74,14 @@ curve_points() {
 }
 
 # 实时读数：只取需要的行，避免 dumpsys 全文开销
-DD=$(dumpsys display 2>/dev/null | grep -E "mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mMinBrightness=|mMaxBrightness=|mMaxPanelBrightness=|^ *mAutoBrightnessAdjustment=|mGlobalBrightnessLimitInfo|OplusFeatureUIR")
+DD=$(dumpsys display 2>/dev/null | grep -E "CurrentLuxResult|finalLux|mLuxRecord|Display State=|Display Brightness=|mHbmStatsState=|mMinBrightness=|mMaxBrightness=|mMaxPanelBrightness=|^ *mAutoBrightnessAdjustment=|mGlobalBrightnessLimitInfo|OplusFeatureUIR")
 
 # 环境光：ColorOS 17 起 dumpsys 删掉了 mLuxRecord/StableValue，改成 [CurrentLuxResult] 的
 # finalLux（同段还有 realTimeLux/lastFinalLux）；ColorOS 16 仍是 mLuxRecord ... StableValue = N，
 # 且 CCT 记录行也含 StableValue，故 16 必须锚定 mLuxRecord。两者互斥，合并到一条 sed 兼容两代。
+# 关键：17 的段头行是 "  [CurrentLuxResult]"，真正的读数在下一行，且该行不含 mLuxRecord ——
+# 上面 grep 的白名单必须同时带上 CurrentLuxResult 和 finalLux（段头与数值分属两行），
+# 否则读数行在进 sed 前就被丢掉，lux 恒为 0（v1.9.4 在 ColorOS 17 上的真机故障）。
 lux=$(printf '%s\n' "$DD" | sed -n 's/.*finalLux=\([0-9.]*\).*/\1/p; s/.*mLuxRecord.*StableValue = \([0-9.]*\).*/\1/p' | head -1)
 
 raw=$(printf '%s\n' "$DD" | sed -n 's/^ *Display Brightness=\([0-9.eE+-]*\).*/\1/p' | head -1)
